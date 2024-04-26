@@ -1,0 +1,465 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2758
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>MEV and MRV Calculator</title>\
+    <style>\
+        body \{\
+            font-family: Arial, sans-serif;\
+            background-color: #f4f4f4;\
+            display: flex;\
+            flex-direction: column;\
+            justify-content: center;\
+            align-items: center;\
+            height: 200vh;\
+            margin: 0;\
+        \}\
+\
+        #calculatorForm \{\
+            background-color: #ffffff;\
+            padding: 20px;\
+            border-radius: 10px;\
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\
+            width: 80%;\
+            max-width: 600px;\
+        \}\
+\
+        select, input[type="button"] \{\
+            width: 100%;\
+            padding: 10px;\
+            margin-bottom: 10px;\
+            border: 1px solid #ccc;\
+            border-radius: 5px;\
+        \}\
+\
+        input[type="button"] \{\
+            background-color: #007BFF;\
+            color: #ffffff;\
+            cursor: pointer;\
+            transition: background-color 0.3s;\
+        \}\
+\
+        input[type="button"]:hover \{\
+            background-color: #0056b3;\
+        \}\
+\
+/* Add these styles to your <style> section */\
+.results-section \{\
+    display: flex;\
+    flex-direction: column;\
+    align-items: center;\
+    width: 100%;\
+    max-width: 600px;\
+    margin-top: 30px;\
+    background-color: #ffffff;\
+    padding: 20px;\
+    border-radius: 10px;\
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\
+\}\
+\
+.results-row \{\
+    display: flex;\
+    justify-content: space-between;\
+    width: 100%;\
+    padding: 10px 0;\
+    border-bottom: 1px solid #e0e0e0;\
+\}\
+\
+.results-row:last-child \{\
+    border-bottom: none;\
+\}\
+\
+.results-label, .results-value \{\
+    width: 30%;\
+    text-align: center;\
+\}\
+\
+    </style>\
+</head>\
+<body>\
+\
+<!-- Form for the calculator -->\
+<form id="calculatorForm">\
+    <label for="sex">Sex:</label>\
+    <select id="sex">\
+        <option value="female">Female</option>\
+        <option value="male">Male</option>\
+    </select>\
+    <br>\
+\
+    <label for="weight">Weight:</label>\
+    <select id="weight">\
+        <option value="weight1">&lt57kg (f) / &lt74kg (m) (m)</option>\
+        <option value="weight2">&lt72kg (f) / &lt105kg (m)</option>\
+        <option value="weight3">&lt84kg (f) / &lt120kg (m)</option>\
+        <option value="weight4">84+kg (f) / 120+kg (m)</option>\
+    </select>\
+    <br>\
+\
+    <label for="height">Height:</label>\
+    <select id="height">\
+        <option value="height1">&lt160cm (f) / &lt170cm (m)</option>\
+        <option value="height2">&lt167cm (f) / &lt182cm (m)</option>\
+        <option value="height3">&lt175cm (f) / &lt195cm (m)</option>\
+        <option value="height4">175+cm (f) / 195+cm (m)</option>\
+    </select>\
+    <br>\
+\
+    <label for="squatStrength">Squat Strength:</label>\
+    <select id="squatStrength">\
+        <option value="squat1">Class VI-III</option>\
+        <option value="squat2">Class II-I</option>\
+        <option value="squat3">Master</option>\
+        <option value="squat4">Elite</option>\
+    </select>\
+    <br>\
+\
+    <label for="benchStrength">Bench Strength:</label>\
+    <select id="benchStrength">\
+        <option value="bench1">Class VI-III</option>\
+        <option value="bench2">Class II-I</option>\
+        <option value="bench3">Master</option>\
+        <option value="bench4">Elite</option>\
+    </select>\
+    <br>\
+\
+    <label for="deadliftStrength">Deadlift Strength:</label>\
+    <select id="deadliftStrength">\
+        <option value="deadlift1">Class VI-III</option>\
+        <option value="deadlift2">Class II-I</option>\
+        <option value="deadlift3">Master</option>\
+        <option value="deadlift4">Elite</option>\
+    </select>\
+    <br>\
+\
+    <label for="experience">Experience:</label>\
+    <select id="experience">\
+        <option value="exp1">&lt4 years of serious strength training</option>\
+        <option value="exp2">4-8 years of serious strength training</option>\
+        <option value="exp3">8-12 years of serious strength training</option>\
+        <option value="exp4">12+ years of serious strength training</option>\
+    </select>\
+    <br>\
+\
+    <label for="age">Age:</label>\
+    <select id="age">\
+        <option value="age1">&lt20 years old</option>\
+        <option value="age2">20-29 years old</option>\
+        <option value="age3">30-39 years old</option>\
+        <option value="age4">40-49 years old</option>\
+        <option value="age5">50+ years old</option>\
+    </select>\
+    <br>\
+\
+    <label for="diet">Diet:</label>\
+    <select id="diet">\
+        <option value="diet1">Not getting sufficient calories or intentionally in a deficit</option>\
+        <option value="diet2">Calories are equated but macro breakdown and nutrient timing isn't accounted for</option>\
+        <option value="diet3">Calories are equated with good macro balance and attention to nutrient timing</option>\
+    </select>\
+    <br>\
+\
+    <label for="sleep">Sleep:</label>\
+    <select id="sleep">\
+        <option value="sleep1">&lt5 hours on average</option>\
+        <option value="sleep2">5-7 hours on average</option>\
+        <option value="sleep3">7+ hours on average</option>\
+    </select>\
+    <br>\
+\
+    <label for="stress">Stress Outside of Training:</label>\
+    <select id="stress">\
+        <option value="stress1">High - from training for other endeavors/manual labor/lifestyle factors</option>\
+        <option value="stress2">Medium - some physically demanding hobbies 1-2x/week with a mix of low and high stress days</option>\
+        <option value="stress3">Low - job isn't physically demanding and low stress in other areas of life</option>\
+    </select>\
+    <br>\
+\
+    <label for="drugs">Performance Enhancing Drugs:</label>\
+    <select id="drugs">\
+        <option value="drugs1">No</option>\
+        <option value="drugs2">Yes</option>\
+    </select>\
+    <br>\
+\
+    <label for="workload">Historical Workload:</label>\
+    <select id="workload">\
+        <option value="workload1">1x/week per lift with minimal accessories</option>\
+        <option value="workload2">1-2x/week per lift with moderate accessories</option>\
+        <option value="workload3">2x/week per lift with significant accessories</option>\
+        <option value="workload4">2-3x/week per lift with moderate to significant accessories</option>\
+        <option value="workload5">3+x/week per lift with moderate to significant accessories</option>\
+    </select>\
+    <br>\
+\
+    <label for="recovery">Historical Recovery Ability:</label>\
+    <select id="recovery">\
+        <option value="recovery1">Rarely sore after more than 1 day of training and respond to high workloads - possibly a background in endurance sports or CrossFit</option>\
+        <option value="recovery2">Rarely sore more than 1 day after training and able to increase workloads</option>\
+        <option value="recovery3">Will often be sore 1-2 days after training and seem to respond to average workloads</option>\
+        <option value="recovery4">Will often be sore 2 days after training</option>\
+        <option value="recovery5">Will often be sore 3 days after training and struggle to increase workloads</option>\
+    </select>\
+    <br>\
+\
+    <input type="button" value="Calculate" onclick="calculateAdjustments()">\
+</form>\
+\
+<p id="results"></p>\
+\
+<script>\
+    function calculateAdjustments() \{\
+        // Get the selected values\
+        const sex = document.getElementById('sex').value;\
+        const weight = document.getElementById('weight').value;\
+        const height = document.getElementById('height').value;\
+        const squatStrength = document.getElementById('squatStrength').value;\
+        const benchStrength = document.getElementById('benchStrength').value;\
+        const deadliftStrength = document.getElementById('deadliftStrength').value;\
+        const experience = document.getElementById('experience').value;\
+        const age = document.getElementById('age').value;\
+        const diet = document.getElementById('diet').value;\
+        const sleep = document.getElementById('sleep').value;\
+        const stress = document.getElementById('stress').value;\
+        const drugs = document.getElementById('drugs').value;\
+        const workload = document.getElementById('workload').value;\
+        const recovery = document.getElementById('recovery').value;\
+\
+        // Define the adjustments based on the provided data\
+        const adjustments = \{\
+            'sex': \{\
+                'female': \{'mev': 1.5, 'mrv': 3\},\
+                'male': \{'mev': 0, 'mrv': 0\}\
+            \},\
+            'weight': \{\
+                'weight1': \{'mev': 1.5, 'mrv': 3\},\
+                'weight2': \{'mev': 0.5, 'mrv': 1\},\
+                'weight3': \{'mev': -0.5, 'mrv': -1\},\
+                'weight4': \{'mev': -1.5, 'mrv': -3\}\
+            \},\
+            'height': \{\
+                'height1': \{'mev': 1, 'mrv': 2\},\
+                'height2': \{'mev': 0.5, 'mrv': 1\},\
+                'height3': \{'mev': -0.5, 'mrv': -1\},\
+                'height4': \{'mev': -1, 'mrv': -2\}\
+            \},\
+            'squatStrength': \{\
+                'squat1': \{'mev': -0.5, 'mrv': 1\},\
+                'squat2': \{'mev': 0, 'mrv': 0\},\
+                'squat3': \{'mev': 0.5, 'mrv': -1\},\
+                'squat4': \{'mev': 1, 'mrv': -3\}\
+            \},\
+            'benchStrength': \{\
+                'bench1': \{'mev': -0.5, 'mrv': 1\},\
+                'bench2': \{'mev': 0, 'mrv': 0\},\
+                'bench3': \{'mev': 0.5, 'mrv': -1\},\
+                'bench4': \{'mev': 1, 'mrv': -3\}\
+            \},\
+            'deadliftStrength': \{\
+                'deadlift1': \{'mev': -0.5, 'mrv': 1\},\
+                'deadlift2': \{'mev': 0, 'mrv': 0\},\
+                'deadlift3': \{'mev': 0.5, 'mrv': -1\},\
+                'deadlift4': \{'mev': 1, 'mrv': -3\}\
+            \},\
+            'experience': \{\
+                'exp1': \{'mev': -1, 'mrv': 0\},\
+                'exp2': \{'mev': -0.5, 'mrv': 2\},\
+                'exp3': \{'mev': 0.5, 'mrv': 0\},\
+                'exp4': \{'mev': 1, 'mrv': -2\}\
+            \},\
+            'age': \{\
+                'age1': \{'mev': -1, 'mrv': 2\},\
+                'age2': \{'mev': -0.5, 'mrv': 1\},\
+                'age3': \{'mev': 0, 'mrv': 0\},\
+                'age4': \{'mev': 0.5, 'mrv': -1\},\
+                'age5': \{'mev': 1, 'mrv': -3\}\
+            \},\
+            'diet': \{\
+                'diet1': \{'mev': 0.5, 'mrv': -2\},\
+                'diet2': \{'mev': 0.5, 'mrv': 0\},\
+                'diet3': \{'mev': 0.5, 'mrv': 1\}\
+            \},\
+            'sleep': \{\
+                'sleep1': \{'mev': 0.5, 'mrv': -2\},\
+                'sleep2': \{'mev': 0, 'mrv': 0\},\
+                'sleep3': \{'mev': -0.5, 'mrv': 1\}\
+            \},\
+            'stress': \{\
+                'stress1': \{'mev': 0.5, 'mrv': -2\},\
+                'stress2': \{'mev': 0, 'mrv': 0\},\
+                'stress3': \{'mev': -0.5, 'mrv': 1\}\
+            \},\
+            'drugs': \{\
+                'drugs1': \{'mev': 0, 'mrv': 0\},\
+                'drugs2': \{'mev': -1.5, 'mrv': 3\}\
+            \},\
+            'workload': \{\
+                'workload1': \{'mev': -1, 'mrv': -2\},\
+                'workload2': \{'mev': -0.5, 'mrv': -1\},\
+                'workload3': \{'mev': 0, 'mrv': 0\},\
+                'workload4': \{'mev': 0.5, 'mrv': 1\},\
+                'workload5': \{'mev': 1, 'mrv': 2\}\
+            \},\
+            'recovery': \{\
+                'recovery1': \{'mev': 1, 'mrv': 2\},\
+                'recovery2': \{'mev': 0.5, 'mrv': 1\},\
+                'recovery3': \{'mev': 0, 'mrv': 0\},\
+                'recovery4': \{'mev': -0.5, 'mrv': -1\},\
+                'recovery5': \{'mev': -1, 'mrv': -2\}\
+            \}\
+        \};\
+\
+        // Baseline Sets for MEV\
+        let squatHypertrophyMEV = 7.5;\
+        let squatStrengthMEV = 5.5;\
+        let squatPeakingMEV = 4.5;\
+\
+        let benchHypertrophyMEV = 9;\
+        let benchStrengthMEV = 8;\
+        let benchPeakingMEV = 6.5;\
+\
+        let deadliftHypertrophyMEV = 5.5;\
+        let deadliftStrengthMEV = 4.5;\
+        let deadliftPeakingMEV = 2.5;\
+\
+        // Baseline Sets for MRV\
+        let squatHypertrophyMRV = 14;\
+        let squatStrengthMRV = 9;\
+        let squatPeakingMRV = 6;\
+\
+        let benchHypertrophyMRV = 17;\
+        let benchStrengthMRV = 11;\
+        let benchPeakingMRV = 8.5;\
+\
+        let deadliftHypertrophyMRV = 11;\
+        let deadliftStrengthMRV = 7;\
+        let deadliftPeakingMRV = 4.5;\
+\
+        // Adjust the baseline values based on the user's input\
+        for (let factor in adjustments) \{\
+        let selectedValue = document.getElementById(factor).value;\
+        let adjustment = adjustments[factor][selectedValue];\
+\
+        squatHypertrophyMEV += adjustment.mev;\
+        squatStrengthMEV += adjustment.mev;\
+        squatPeakingMEV += adjustment.mev;\
+        squatHypertrophyMRV += adjustment.mrv;\
+        squatStrengthMRV += adjustment.mrv;\
+        squatPeakingMRV += adjustment.mrv;\
+\
+        benchHypertrophyMEV += adjustment.mev;\
+        benchStrengthMEV += adjustment.mev;\
+        benchPeakingMEV += adjustment.mev;\
+        benchHypertrophyMRV += adjustment.mrv;\
+        benchStrengthMRV += adjustment.mrv;\
+        benchPeakingMRV += adjustment.mrv;\
+\
+        deadliftHypertrophyMEV += adjustment.mev;\
+        deadliftStrengthMEV += adjustment.mev;\
+        deadliftPeakingMEV += adjustment.mev;\
+        deadliftHypertrophyMRV += adjustment.mrv;\
+        deadliftStrengthMRV += adjustment.mrv;\
+        deadliftPeakingMRV += adjustment.mrv;\
+\
+        let totalMev = adjustments['sex'][sex]['mev'] + adjustments['weight'][weight]['mev'] + adjustments['height'][height]['mev'] + adjustments['experience'][experience]['mev'] + adjustments['age'][age]['mev'] + adjustments['diet'][diet]['mev'] + adjustments['sleep'][sleep]['mev'] + adjustments['stress'][stress]['mev'] + adjustments['drugs'][drugs]['mev'] + adjustments['workload'][workload]['mev'] + adjustments['recovery'][recovery]['mev'];\
+\
+        let totalMrv = adjustments['sex'][sex]['mrv'] + adjustments['weight'][weight]['mrv'] + adjustments['height'][height]['mrv'] + adjustments['experience'][experience]['mrv'] + adjustments['age'][age]['mrv'] + adjustments['diet'][diet]['mrv'] + adjustments['sleep'][sleep]['mrv'] + adjustments['stress'][stress]['mrv'] + adjustments['drugs'][drugs]['mrv'] + adjustments['workload'][workload]['mrv'] + adjustments['recovery'][recovery]['mrv'];\
+\
+        // Calculate MEV and MRV adjustments for specific exercises\
+        let squatMev = totalMev + adjustments['squatStrength'][squatStrength]['mev'];\
+        let squatMrv = totalMrv + adjustments['squatStrength'][squatStrength]['mrv'];\
+\
+        let benchMev = totalMev + adjustments['benchStrength'][benchStrength]['mev'];\
+        let benchMrv = totalMrv + adjustments['benchStrength'][benchStrength]['mrv'];\
+\
+        let deadliftMev = totalMev + adjustments['deadliftStrength'][deadliftStrength]['mev'];\
+        let deadliftMrv = totalMrv + adjustments['deadliftStrength'][deadliftStrength]['mrv'];\
+\
+// Adjust MEV and MRV values to ensure they are whole numbers\
+function adjustToWholeNumber(value, isMEV) \{\
+    if (value % 1 === 0.5) \{\
+        if (isMEV) \{\
+            return value + 0.5;\
+        \} else \{\
+            return value - 0.5;\
+        \}\
+    \}\
+    return value;\
+\}\
+\
+// Adjust the baseline values for MEV\
+squatHypertrophyMEV = adjustToWholeNumber(squatHypertrophyMEV, true);\
+squatStrengthMEV = adjustToWholeNumber(squatStrengthMEV, true);\
+squatPeakingMEV = adjustToWholeNumber(squatPeakingMEV, true);\
+\
+benchHypertrophyMEV = adjustToWholeNumber(benchHypertrophyMEV, true);\
+benchStrengthMEV = adjustToWholeNumber(benchStrengthMEV, true);\
+benchPeakingMEV = adjustToWholeNumber(benchPeakingMEV, true);\
+\
+deadliftHypertrophyMEV = adjustToWholeNumber(deadliftHypertrophyMEV, true);\
+deadliftStrengthMEV = adjustToWholeNumber(deadliftStrengthMEV, true);\
+deadliftPeakingMEV = adjustToWholeNumber(deadliftPeakingMEV, true);\
+\
+// Adjust the baseline values for MRV\
+squatHypertrophyMRV = adjustToWholeNumber(squatHypertrophyMRV, false);\
+squatStrengthMRV = adjustToWholeNumber(squatStrengthMRV, false);\
+squatPeakingMRV = adjustToWholeNumber(squatPeakingMRV, false);\
+\
+benchHypertrophyMRV = adjustToWholeNumber(benchHypertrophyMRV, false);\
+benchStrengthMRV = adjustToWholeNumber(benchStrengthMRV, false);\
+benchPeakingMRV = adjustToWholeNumber(benchPeakingMRV, false);\
+\
+deadliftHypertrophyMRV = adjustToWholeNumber(deadliftHypertrophyMRV, false);\
+deadliftStrengthMRV = adjustToWholeNumber(deadliftStrengthMRV, false);\
+deadliftPeakingMRV = adjustToWholeNumber(deadliftPeakingMRV, false);\
+\
+    \}\
+\
+// Construct the results display\
+let resultsDisplay = `\
+<div class="results-section">\
+        <div class="results-title"><strong>MEV-MRV Results</strong></div>\
+        <div class="results-row">\
+            <div class="results-label"><strong>Exercise</strong></div>\
+            <div class="results-label"><strong>Hypertrophy</strong></div>\
+            <div class="results-label"><strong>Strength</strong></div>\
+            <div class="results-label"><strong>Peaking</strong></div>\
+        </div>\
+        <div class="results-row">\
+            <div class="results-label">Squat</div>\
+            <div class="results-value">$\{squatHypertrophyMEV\} - $\{squatHypertrophyMRV\}</div>\
+            <div class="results-value">$\{squatStrengthMEV\} - $\{squatStrengthMRV\}</div>\
+            <div class="results-value">$\{squatPeakingMEV\} - $\{squatPeakingMRV\}</div>\
+        </div>\
+        <div class="results-row">\
+            <div class="results-label">Bench</div>\
+            <div class="results-value">$\{benchHypertrophyMEV\} - $\{benchHypertrophyMRV\}</div>\
+            <div class="results-value">$\{benchStrengthMEV\} - $\{benchStrengthMRV\}</div>\
+            <div class="results-value">$\{benchPeakingMEV\} - $\{benchPeakingMRV\}</div>\
+        </div>\
+        <div class="results-row">\
+            <div class="results-label">Deadlift</div>\
+            <div class="results-value">$\{deadliftHypertrophyMEV\} - $\{deadliftHypertrophyMRV\}</div>\
+            <div class="results-value">$\{deadliftStrengthMEV\} - $\{deadliftStrengthMRV\}</div>\
+            <div class="results-value">$\{deadliftPeakingMEV\} - $\{deadliftPeakingMRV\}</div>\
+        </div>\
+    </div>\
+`;\
+\
+// Display the results in the 'results' element\
+document.getElementById('results').innerHTML = resultsDisplay;\
+\
+\
+    \}\
+</script>\
+\
+</body>\
+</html>}
